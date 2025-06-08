@@ -1,5 +1,7 @@
-import React from "react";
-import App from "../app";
-export default function Game(){
-    <App></App>
+// app/game.tsx
+import GameView from '@/components/GameView';
+import React from 'react';
+
+export default function GameScreen() {
+  return <GameView />;
 }

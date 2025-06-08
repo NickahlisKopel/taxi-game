@@ -1,4 +1,4 @@
-import { InputState } from '@/app/types/input';
+import { InputState } from '@/components/types/input';
 import React, { useRef } from 'react';
 import { Animated, PanResponder, StyleSheet, View } from 'react-native';
 
@@ -27,11 +27,12 @@ const Joystick: React.FC<JoystickProps> = ({ onInput }) => {
         position.setValue({ x: dx, y: dy });
 
         const input: InputState = {
-          forward: dy < -10,
-          backward: dy > 10,
-          left: dx < -10,
-          right: dx > 10,
-        };
+            forward: dy < -10,
+            backward: dy > 10,
+            left: dx < -10,
+            right: dx > 10,
+          };
+          
 
         onInput(input);
       },

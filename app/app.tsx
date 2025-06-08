@@ -3,10 +3,10 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GameEngine } from 'react-native-game-engine';
 
-import { InputState } from '@/app/types/input';
-import Physics from '@/app/types/physics';
 import Joystick from '@/components/JoyStick';
 import Taxi from '@/components/entities/Taxi';
+import { InputState } from '@/components/types/input';
+import Physics from '@/components/types/physics';
 
 export default function App() {
   const engine = useRef(Matter.Engine.create({ enableSleeping: false })).current;
