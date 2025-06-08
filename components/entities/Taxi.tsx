@@ -12,6 +12,7 @@ const Taxi: React.FC<TaxiProps> = ({ body, cameraOffset }) => {
   const height = 30;
   const x = body.position.x - width / 2 - cameraOffset.x;
   const y = body.position.y - height / 2 - cameraOffset.y;
+  
 
   return (
     <View
@@ -24,7 +25,10 @@ const Taxi: React.FC<TaxiProps> = ({ body, cameraOffset }) => {
         backgroundColor: 'yellow',
         borderWidth: 2,
         borderColor: 'red',
-        transform: [{ rotate: `${body.angle}rad` }],
+        transform: [
+            { rotate: `${body.angle}rad` },
+            { rotate: `-90deg` }, // adjust visual orientation
+          ],
       }}
     />
   );

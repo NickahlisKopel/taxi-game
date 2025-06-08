@@ -8,12 +8,13 @@ const Physics = (input: InputState): System => {
     const taxi = entities.taxi.body as Matter.Body;
     
 
-    const force = 0.001;
+    const force = 0.01;
     const turn = 0.03;
     // Add this at the top of the system function
-    const VELOCITY_DAMPING = 0.98;
+    const VELOCITY_DAMPING = 0.1;
     // After applying forces and rotation:
-    const forwardAngle = taxi.angle - Math.PI / 2;
+    const forwardAngle = taxi.angle + Math.PI / 2;
+    
 
 // Slowly reduce velocity to simulate rolling friction
     Matter.Body.setVelocity(taxi, {
@@ -24,17 +25,21 @@ const Physics = (input: InputState): System => {
 
 
 
+
+
     // Forward = Up screen
     if (input.forward) {
-      const angle = taxi.angle - Math.PI / 2;
-
-// Rotate 90 deg to make 0 = up
+      const forwardAngle = taxi.angle - Math.PI / 2;
       Matter.Body.applyForce(taxi, taxi.position, {
         x: Math.cos(forwardAngle) * force,
         y: Math.sin(forwardAngle) * force,
-      });
-      
+        
+      }
+    );
+    console.log('Angle:', taxi.angle.toFixed(2), 
+              'Force dir: ', Math.cos(forwardAngle).toFixed(2), Math.sin(forwardAngle).toFixed(2));
     }
+    
 
     if (input.backward) {
       Matter.Body.setVelocity(taxi, {
