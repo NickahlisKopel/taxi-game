@@ -17,6 +17,7 @@ const COLORS = {
   house: '#4ecdc4',           // Turquoise houses
   apartment: '#95e1d3',       // Mint apartments
   office: '#a8dadc',          // Light blue office
+  garage: '#f9a825',          // Orange garage
 
   // Traffic
   carRed: '#e63946',
@@ -160,6 +161,10 @@ const CityMap: React.FC<CityMapProps> = ({ cameraOffset }) => {
 
       <View style={[styles.buildingShadow, { left: 1000 - cameraOffset.x, top: 60 - cameraOffset.y }]} />
       <View style={[styles.building, { left: 1000 - cameraOffset.x, top: 60 - cameraOffset.y, backgroundColor: COLORS.house }]} />
+
+      {/* Garage - Far right middle */}
+      <View style={[styles.buildingLargeShadow, { left: 1000 - cameraOffset.x, top: 360 - cameraOffset.y }]} />
+      <View style={[styles.buildingLarge, { left: 1000 - cameraOffset.x, top: 360 - cameraOffset.y, backgroundColor: COLORS.garage }]} />
     </View>
   );
 };

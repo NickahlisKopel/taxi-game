@@ -1,6 +1,6 @@
 export interface Destination {
   id: string;
-  type: 'store' | 'house' | 'apartment';
+  type: 'store' | 'house' | 'apartment' | 'garage';
   position: { x: number; y: number };
   name: string;
   pickupZone: { x: number; y: number; width: number; height: number };
@@ -99,6 +99,15 @@ export const DESTINATIONS: Destination[] = [
     position: { x: 475, y: 405 },
     name: 'City Center Office',
     pickupZone: { x: 420, y: 480, width: 110, height: 90 },
+  },
+
+  // Garage (special - for refueling, repairs, and progression)
+  {
+    id: 'garage-1',
+    type: 'garage',
+    position: { x: 1045, y: 395 },
+    name: "Joe's Garage",
+    pickupZone: { x: 1000, y: 440, width: 110, height: 90 },
   },
 ];
 
