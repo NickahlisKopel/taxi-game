@@ -6,7 +6,13 @@ import {
   isInPickupZone,
   getDistance,
 } from '@/components/types/destination';
-import { GameState, PAYMENT_RATES, CONSUMPTION_RATES } from '@/components/types/gameState';
+import {
+  GameState,
+  PAYMENT_RATES,
+  CONSUMPTION_RATES,
+  SPEED_LIMITS,
+  SPEEDING_PENALTIES,
+} from '@/components/types/gameState';
 
 const PICKUP_DISTANCE = 50; // Distance to trigger pickup
 const STOP_VELOCITY_THRESHOLD = 0.5; // Max velocity to be considered "stopped"
@@ -30,11 +36,48 @@ const CustomerSystem = (): System => {
     const distanceTraveled = getDistance(lastPosition, currentPosition);
     lastPosition = currentPosition;
 
+    // Calculate current speed (velocity magnitude)
+    const velocityMagnitude = Math.sqrt(
+      taxiBody.velocity.x ** 2 + taxiBody.velocity.y ** 2
+    );
+    state.currentSpeed = velocityMagnitude * 60; // Convert to units per second
+
+    // Determine speed limit based on location
+    // Check if near residential areas (houses)
+    const nearResidential = currentPosition.y < 250 || currentPosition.y > 850;
+    if (nearResidential) {
+      state.speedLimit = SPEED_LIMITS.RESIDENTIAL;
+    } else if (currentPosition.x > 900 || currentPosition.x < 300) {
+      state.speedLimit = SPEED_LIMITS.COMMERCIAL;
+    } else {
+      state.speedLimit = SPEED_LIMITS.MAIN_ROAD;
+    }
+
+    // Check if speeding
+    const speedOverLimit = state.currentSpeed - state.speedLimit;
+    state.isSpeeding = speedOverLimit > SPEEDING_PENALTIES.TICKET_THRESHOLD;
+
+    // Apply speeding penalties
+    if (state.isSpeeding) {
+      // Chance of getting a ticket
+      if (Math.random() < SPEEDING_PENALTIES.TICKET_CHANCE) {
+        state.money -= SPEEDING_PENALTIES.TICKET_COST;
+        state.totalSpent += SPEEDING_PENALTIES.TICKET_COST;
+        state.totalTickets++;
+        console.log(`⚠️ SPEEDING TICKET! -$${SPEEDING_PENALTIES.TICKET_COST}. Total tickets: ${state.totalTickets}`);
+      }
+    }
+
     // Consume fuel and wear down car when moving
     if (distanceTraveled > 0.1) {
       // Only consume when actually moving
       state.fuel -= distanceTraveled * CONSUMPTION_RATES.FUEL_PER_DISTANCE;
-      state.carCondition -= distanceTraveled * CONSUMPTION_RATES.WEAR_PER_DISTANCE;
+
+      // Extra wear when speeding
+      const wearRate = state.isSpeeding
+        ? CONSUMPTION_RATES.WEAR_PER_DISTANCE + SPEEDING_PENALTIES.EXTRA_WEAR_RATE
+        : CONSUMPTION_RATES.WEAR_PER_DISTANCE;
+      state.carCondition -= distanceTraveled * wearRate;
 
       // Clamp values
       state.fuel = Math.max(0, state.fuel);

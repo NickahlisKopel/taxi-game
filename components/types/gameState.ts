@@ -18,6 +18,12 @@ export interface GameState {
   fuel: number;              // 0-100%
   carCondition: number;      // 0-100%
 
+  // Speed tracking
+  currentSpeed: number;      // Current speed (0-100+ units per second)
+  speedLimit: number;        // Current area speed limit
+  isSpeeding: boolean;       // Is currently over speed limit
+  totalTickets: number;      // Total speeding tickets received
+
   // Stats
   totalEarnings: number;
   totalSpent: number;
@@ -40,6 +46,12 @@ export const initialGameState: GameState = {
   // Resources start full
   fuel: 100,
   carCondition: 100,
+
+  // Speed tracking
+  currentSpeed: 0,
+  speedLimit: 30,
+  isSpeeding: false,
+  totalTickets: 0,
 
   // Stats
   totalEarnings: 0,
@@ -73,4 +85,18 @@ export const CONSUMPTION_RATES = {
   FUEL_PER_DISTANCE: 0.01,    // 1% fuel per 100 units traveled
   WEAR_PER_DISTANCE: 0.005,   // 0.5% wear per 100 units traveled
   WEAR_PER_COLLISION: 5,      // 5% damage per collision
+};
+
+// Speed limits and penalties
+export const SPEED_LIMITS = {
+  RESIDENTIAL: 30,            // Residential areas (near houses)
+  COMMERCIAL: 40,             // Commercial areas (near stores)
+  MAIN_ROAD: 50,              // Main roads
+};
+
+export const SPEEDING_PENALTIES = {
+  TICKET_COST: 100,           // $100 fine per ticket
+  TICKET_THRESHOLD: 10,       // Speed over limit to get ticket
+  EXTRA_WEAR_RATE: 0.01,      // Extra wear when speeding (2x normal)
+  TICKET_CHANCE: 0.002,       // 0.2% chance per frame when speeding
 };

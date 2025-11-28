@@ -61,6 +61,25 @@ const HUD: React.FC<HUDProps> = ({ gameState }) => {
         </View>
       </View>
 
+      {/* Speedometer */}
+      <View style={[
+        styles.speedometerContainer,
+        gameState.isSpeeding && styles.speedometerSpeeding
+      ]}>
+        <Text style={styles.speedLabel}>
+          {gameState.isSpeeding ? '⚠️ ' : ''}SPEED
+        </Text>
+        <Text style={[
+          styles.speedValue,
+          gameState.isSpeeding && styles.speedValueSpeeding
+        ]}>
+          {Math.round(gameState.currentSpeed)}
+        </Text>
+        <Text style={styles.speedLimit}>
+          Limit: {gameState.speedLimit}
+        </Text>
+      </View>
+
       {/* Career Status */}
       <View style={styles.careerContainer}>
         <Text style={styles.careerText}>{getCareerLabel()}</Text>
@@ -166,6 +185,38 @@ const styles = StyleSheet.create({
   ridesText: {
     color: '#fff',
     fontSize: 14,
+  },
+  speedometerContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    padding: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginBottom: 5,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  speedometerSpeeding: {
+    backgroundColor: 'rgba(244, 67, 54, 0.3)',
+    borderColor: '#f44336',
+  },
+  speedLabel: {
+    color: '#fff',
+    fontSize: 10,
+    marginBottom: 2,
+  },
+  speedValue: {
+    color: '#4caf50',
+    fontSize: 28,
+    fontWeight: 'bold',
+    lineHeight: 28,
+  },
+  speedValueSpeeding: {
+    color: '#f44336',
+  },
+  speedLimit: {
+    color: '#aaa',
+    fontSize: 10,
+    marginTop: 2,
   },
   statusContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
